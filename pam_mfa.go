@@ -72,8 +72,6 @@ func authenticate(pamh *C.pam_handle_t, uid int, username string) AuthResult {
 		auth_method := amthd.(string)
 		auth_result := false
 		switch auth_method {
-		case "yubico_otp":
-			auth_result = authenticateYubicoOTP(pamh, config["yubico_otp_id"].(string))
 		case "totp":
 			auth_result = authenticateTOTP(pamh, config["totp_key"].(string))
 		}
@@ -94,10 +92,6 @@ func pamAuthenticate(pamh *C.pam_handle_t, uid int, username string, argv []stri
 	for _, arg := range argv {
 		opt := strings.SplitN(arg, "=", 2)
 		switch opt[0] {
-		case "yubico_otp_id":
-			yubicoOtpId = opt[1]
-		case "yubico_otp_secret":
-			yubicoOtpSecret = opt[1]
 		case "totp_window":
 			totpWindow, _ = strconv.Atoi(opt[1])
 		}
